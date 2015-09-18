@@ -149,6 +149,10 @@ int main(void) {
 		free(tIndex->modals);
 		free(tIndex->diameters);
 	}
+	free(engineers);
+	free(buildings);
+	free(towers);
+	free(houses);
 
 	return 0;
 }
@@ -204,13 +208,13 @@ void addEngineer(){
 
 void editEngineer(){
 	int eng,edit;
-	char * newValue;
+	char * newValue[100];
 	printf("Choose an Engineer: \n");
 	eng = printEngineers();
 	printf("Choose what you want to edit:\n1)Name\n2)Surname\n3)DOB\n4)Starting Date\n5)Salary\n6)Position\n");
 	scanf("%d",&edit);
 	printf("Enter new value: \n");
-	scanf("%ms",&newValue);
+	scanf("%s",newValue);
 	updateInfo(eng,edit,newValue);
 }
 
@@ -403,6 +407,10 @@ void showStructures(){
 	House * hIndex;
 	House * hEnd = houses + (houses_size - 1);
 
+	pid_t childpid;
+
+
+
 	printf("Enter engineer's id:\n");
 	scanf("%d",&id);
 
@@ -412,6 +420,8 @@ void showStructures(){
 		strcpy(date,temp);
 		free(temp);
 
+		childpid = fork();
+		if (childpid == 0){
 	for(bIndex = buildings; bIndex <= bEnd; ++bIndex){
 		if(bIndex->engineerID == id){
 			if(strcmp(bIndex->date,date) == 0){
@@ -432,6 +442,7 @@ void showStructures(){
 				printHouse(hIndex);
 			}
 		}
+	}
 	}
 	free(date);
 }
@@ -577,15 +588,44 @@ int inRange(char * start, char * end, char * date){
 			if(atoi(dateMonth) >= atoi(startMonth) && atoi(dateMonth) <= atoi(endMonth)){
 				if(atoi(dateMonth) == atoi(startMonth) && atoi(dateMonth) == atoi(endMonth)){
 					if(atoi(dateDay) >= atoi(startDay) && atoi(dateDay) <= atoi(endDay)){
+						free(startDay);
+						free(startMonth);
+						free(startYear);
+						free(endDay);
+						free(endMonth);
+						free(endYear);
+						free(dateDay);
+						free(dateMonth);
+						free(dateYear);
 						return 1;
 					}
 			}
-				else
+				else{
+					free(startDay);
+					free(startMonth);
+					free(startYear);
+					free(endDay);
+					free(endMonth);
+					free(endYear);
+					free(dateDay);
+					free(dateMonth);
+					free(dateYear);
 					return 1;
+				}
 		}
 		}
-		else
+		else{
+			free(startDay);
+			free(startMonth);
+			free(startYear);
+			free(endDay);
+			free(endMonth);
+			free(endYear);
+			free(dateDay);
+			free(dateMonth);
+			free(dateYear);
 			return 1;
+		}
 	}
 
 	free(startDay);
